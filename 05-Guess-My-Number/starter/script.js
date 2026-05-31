@@ -8,7 +8,7 @@ document.querySelector('.guess').value = 23;
 */
 
 const secretNumber = Math.trunc(Math.random() * 20 + 1);
-document.querySelector('.number').textContent = `${secretNumber}cm`;
+//document.querySelector('.number').textContent = `${secretNumber}cm`;
 
 let score = 20;
 
@@ -20,9 +20,10 @@ const checkGuess = function () {
     document.querySelector('.message').textContent = '⛔️ oh come on!';
 
 //correct number
-
   } else if (guess === secretNumber) {
     document.querySelector('.message').textContent = 'Correct Number!';
+    document.querySelector('.number').textContent =`${secretNumber}cm`;
+    //wing state change
     document.querySelector('body').style.backgroundColor = '#60b347';
     document.querySelector('.number').style.width = '30rem';
 
