@@ -1,54 +1,99 @@
 'use strict';
 
+// State
 let secretNumber = Math.trunc(Math.random() * 20 + 1);
-document.querySelector('.number').textContent = `${secretNumber}cm`;
-
 let score = 20;
 let highscore = 0;
 
-// check guess function - basically the whole game logic
+// DOM
+const messageEl = document.querySelector('.message');
+const numberEl = document.querySelector('.number');
+const scoreEl = document.querySelector('.score');
+const highscoreEl = document.querySelector('.highscore');
+const guessEl = document.querySelector('.guess');
+const checkBtn = document.querySelector('.check');
+const againBtn = document.querySelector('.again');
+const bodyEl = document.querySelector('body');
+
+// Constants
+const DEFAULT_BG = '#222';
+const WIN_BG = '#60b347';
+const NUMBER_WIDTH_DEFAULT = '15rem';
+const NUMBER_WIDTH_WIN = '30rem';
+const AGAIN_BTN_DEFAULT = '#eee';
+const AGAIN_BTN_LOSE = '#87CEEB';
+
+// Helpers
+const displayMessage = function (message) {
+  messageEl.textContent = message;
+};
+
+const displayScore = function (value) {
+  scoreEl.textContent = value;
+};
+
+const displayNumber = function (value) {
+  numberEl.textContent = value === '?' ? '?' : `${value}cm`;
+};
+
+const updateHighscore = function () {
+  if (score > highscore) {
+    highscore = score;
+    highscoreEl.textContent = highscore;
+  }
+};
+
+const setWinStyles = function () {
+  bodyEl.style.backgroundColor = WIN_BG;
+  numberEl.style.width = NUMBER_WIDTH_WIN;
+};
+
+const resetStyles = function () {
+  bodyEl.style.backgroundColor = DEFAULT_BG;
+  numberEl.style.width = NUMBER_WIDTH_DEFAULT;
+  againBtn.style.backgroundColor = AGAIN_BTN_DEFAULT;
+};
+
+// Game logic
 const checkGuess = function () {
-  const guess = Number(document.querySelector('.guess').value);
+  const guess = Number(guessEl.value);
 
-// no input
   if (!guess) {
-    document.querySelector('.message').textContent = '⛔️ oh come on!';
-
-// correct number
+    displayMessage('⛔️ oh come on!');
   } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = '🥳Correct Number!';
-    document.querySelector('.number').textContent =`${secretNumber}cm`;
-
-    if (score > highscore) {
-      highscore = score;
-      document.querySelector('.highscore').textContent = highscore;
-    }
-
-// win state change
-    document.querySelector('body').style.backgroundColor = '#60b347';
-    document.querySelector('.number').style.width = '30rem';
-
-// incorrect guess
+    displayMessage('🥳Correct Number!');
+    displayNumber(secretNumber);
+    updateHighscore();
+    setWinStyles();
   } else if (guess !== secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent =
-        guess > secretNumber ? '🥲Nah! Too high!' : '😭Nah! Too low!';
+      displayMessage(
+        guess > secretNumber ? '🥲Nah! Too high!' : '😭Nah! Too low!'
+      );
       score--;
-      document.querySelector('.score').textContent = score;
+      displayScore(score);
     } else {
-      document.querySelector('.message').textContent =
-        'Set up a date and let me show you!';
-      document.querySelector('.score').textContent = 0;
-      document.querySelector('.again').style.backgroundColor = '#87CEEB';
+      displayMessage('Set up a date and let me show you!');
+      displayScore(0);
+      againBtn.style.backgroundColor = AGAIN_BTN_LOSE;
     }
   }
 };
 
-// check button functionality
-document.querySelector('.check').addEventListener('click', checkGuess);
+const resetGame = function () {
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20 + 1);
+  displayMessage('Start guessing...');
+  displayNumber('?');
+  displayScore(score);
+  guessEl.value = '';
+  resetStyles();
+};
 
-//enter key functionality
-document.querySelector('.guess').addEventListener('keydown', function (e) {
+// Event listeners
+checkBtn.addEventListener('click', checkGuess);
+
+guessEl.addEventListener('keydown', function (e) {
   if (['e', 'E', '+', '-'].includes(e.key)) {
     e.preventDefault();
   }
@@ -57,16 +102,4 @@ document.querySelector('.guess').addEventListener('keydown', function (e) {
   }
 });
 
-//again button functionality
-document.querySelector('.again').addEventListener('click', function () {
-  score = 20;
-  secretNumber=Math.trunc(Math.random() * 20 + 1);
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.guess').value = '';
-
-  document.querySelector('body').style.backgroundColor = '#222';
-  document.querySelector('.number').style.width = '15rem';
-  document.querySelector('.again').style.backgroundColor = '#eee';
-});
+againBtn.addEventListener('click', resetGame);
