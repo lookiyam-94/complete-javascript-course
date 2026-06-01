@@ -7,11 +7,12 @@ document.querySelector('.score').textContent = 10;
 document.querySelector('.guess').value = 23;
 */
 
-const secretNumber = Math.trunc(Math.random() * 20 + 1);
-//document.querySelector('.number').textContent = `${secretNumber}cm`;
+let secretNumber = Math.trunc(Math.random() * 20 + 1);
+document.querySelector('.number').textContent = `${secretNumber}cm`;
 
 let score = 20;
 
+// check guess function - basically the whole game logic
 const checkGuess = function () {
   const guess = Number(document.querySelector('.guess').value);
 
@@ -36,6 +37,8 @@ const checkGuess = function () {
     } else {
         document.querySelector('.message').textContent = 'Set up a date and let me show you!';
         document.querySelector('.score').textContent = 0;
+
+        document.querySelector('.again').style.backgroundColor = '#87CEEB';
     }
 
 //too low
@@ -47,6 +50,7 @@ const checkGuess = function () {
     } else {
         document.querySelector('.message').textContent = 'Set up a date and let me show you!';
         document.querySelector('.score').textContent = 0;
+        document.querySelector('.again').style.backgroundColor = '#87CEEB';
     }
   }
 };
@@ -60,4 +64,18 @@ document.querySelector('.guess').addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     checkGuess();
   }
+});
+
+//again button functionality
+document.querySelector('.again').addEventListener('click', function () {
+  score = 20;
+  secretNumber=Math.trunc(Math.random() * 20 + 1);
+  document.querySelector('.message').textContent = 'Start guessing...';
+  document.querySelector('.number').textContent = '?';
+  document.querySelector('.score').textContent = score;
+  document.querySelector('.guess').value = '';
+
+  document.querySelector('body').style.backgroundColor = '#222';
+  document.querySelector('.number').style.width = '15rem';
+  document.querySelector('.again').style.backgroundColor = '#eee';
 });
