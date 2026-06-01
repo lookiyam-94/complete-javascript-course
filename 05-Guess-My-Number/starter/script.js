@@ -11,6 +11,7 @@ let secretNumber = Math.trunc(Math.random() * 20 + 1);
 document.querySelector('.number').textContent = `${secretNumber}cm`;
 
 let score = 20;
+let highscore = 0;
 
 // check guess function - basically the whole game logic
 const checkGuess = function () {
@@ -24,6 +25,12 @@ const checkGuess = function () {
   } else if (guess === secretNumber) {
     document.querySelector('.message').textContent = 'Correct Number!';
     document.querySelector('.number').textContent =`${secretNumber}cm`;
+
+    if (score > highscore) {
+      highscore = score; 
+      document.querySelector('.highscore').textContent = highscore;
+    };
+    
     //wing state change
     document.querySelector('body').style.backgroundColor = '#60b347';
     document.querySelector('.number').style.width = '30rem';
@@ -55,8 +62,10 @@ const checkGuess = function () {
   }
 };
 
+//check button functionality
 document.querySelector('.check').addEventListener('click', checkGuess);
 
+//enter key functionality
 document.querySelector('.guess').addEventListener('keydown', function (e) {
   if (['e', 'E', '+', '-'].includes(e.key)) {
     e.preventDefault();

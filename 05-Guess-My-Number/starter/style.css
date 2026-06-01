@@ -128,9 +128,15 @@ h1 {
 
 /* RESPONSIVE */
 @media (max-width: 75em) {
+  header {
+    padding-bottom: 6rem;
+  }
+
   main {
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
+    padding-top: 6rem;
   }
 
   .right {
@@ -142,7 +148,7 @@ h1 {
   header {
     height: auto;
     min-height: 28rem;
-    padding-bottom: 8rem;
+    padding-bottom: 12rem;
   }
 
   h1 {
@@ -195,6 +201,11 @@ h1 {
 
   main {
     gap: 3rem;
-    padding: 2rem 1.5rem;
+    padding: 8rem 1.5rem 2rem;
+    align-items: center;
+  }
+
+  .left {
+    margin-top: 1rem;
   }
 }
